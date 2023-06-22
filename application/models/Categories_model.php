@@ -2,31 +2,17 @@
 
 class Categories_model extends CI_Model
 {
-    protected $created_at_field = 'created_at';
-    protected $updated_at_field = 'updated_at';
-    private $_table = "categories";
-    public $id;
-    public $name;
-    public $created_at;
-    public $updated_at;
-
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function before_insert($data)
+    public function searchData($name)
     {
-        $data[$this->created_at_field] =  date('Y-m-d H:i:s');
-        $data[$this->created_at_field] = date('Y-m-d H:i:s');
+        $this->db->like('name', $name);
+        $query = $this->db->get('categories');
+        return $query->result();
     }
-
-    public function before_update($data)
-    {
-        $data[$this->updated_at_field] = date('Y-m-d H:i:s');
-        return $data;
-    }
-
 
     public function getAll()
     {

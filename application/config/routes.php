@@ -57,3 +57,4 @@ $route['category/(:num)'] = 'categories/show/$1';
 $route['category/insert'] = 'categories/insert';
 $route['category/update/(:num)'] = 'categories/update/$1';
 $route['category/delete/(:num)'] = 'categories/delete/$1';
+$route['category/search/(:any)'] = 'categories/search/$1';

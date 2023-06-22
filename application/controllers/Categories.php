@@ -9,6 +9,13 @@ class Categories extends CI_Controller
         $this->load->library('form_validation');
     }
 
+    public function search($name)
+    {
+        $categories = $this->Categories_model->searchData($name);
+        $jsonData = json_encode($categories);
+        $this->output->set_output($jsonData);
+    }
+
     public function index()
     {
         $data["categories"] = $this->Categories_model->getAll();
