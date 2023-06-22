@@ -7,14 +7,115 @@ class Categories extends CI_Controller
         parent::__construct();
         $this->load->model('Categories_model');
         $this->load->library('form_validation');
-       
     }
 
     public function index()
     {
-        $data["categories" ]= $this->Categories_model->getAll();
-        $this->load->view("category/list", $data);
-        // $json = json_encode($data);
-        // echo $json;
+        $data["categories"] = $this->Categories_model->getAll();
+        $jsonData = json_encode($data);
+        $this->output->set_output($jsonData);
+    }
+
+    public function show($id)
+    {
+        $data = $this->Categories_model->getById($id);
+        if ($data) {
+            $jsonData = json_encode($data);
+            $this->output->set_output($jsonData);
+        } else {
+            $jsonData = json_encode(['error' => 'Data not found']);
+            $this->output->set_output($jsonData);
+        }
+    }
+
+    public function insert()
+    {
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            $response = array(
+                'status' => 'error',
+                'message' => validation_errors()
+            );
+        } else {
+            $data = array(
+                'name' => $this->input->post('name'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+
+            $result = $this->Categories_model->insertData($data);
+            if ($result) {
+                $response = array(
+                    'status' => 'success',
+                    'message' => 'Data inserted successfullly'
+                );
+            } else {
+                $response = array(
+                    'status' => 'error',
+                    'message' => 'Failed to insert data'
+                );
+            }
+        }
+        $jsonData = json_encode($response);
+        $this->output->set_output($jsonData);
+    }
+
+    public function update($id)
+    {
+        try {
+            $this->form_validation->set_rules('name', 'Name', 'required');
+            if ($this->form_validation->run() == FALSE) {
+                $response = array(
+                    'status' => 'error',
+                    'message' => validation_errors()
+                );
+            } else {
+                $data = array(
+                    'name' => $this->input->post('name'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                );
+
+                $result = $this->Categories_model->updateData($id, $data);
+                if ($result) {
+                    $response = array(
+                        'status' => 'success',
+                        'message' => 'Data updated successfullly'
+                    );
+                } else {
+                    $response = array(
+                        'status' => 'error',
+                        'message' => 'Failed to updated data'
+                    );
+                }
+            }
+            $jsonData = json_encode($response);
+            $this->output->set_output($jsonData);
+        } catch (Exception $e) {
+            $response = array(
+                'status' => 'error',
+                'message' => $e->getMessage()
+            );
+
+            $jsonData = json_encode($response);
+            $this->output->set_output($jsonData);
+        }
+    }
+
+    public function delete($id)
+    {
+        $result = $this->Categories_model->deleteData($id);
+
+        if ($result) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Data deleted successfully'
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'ID not found or deletion failed'
+            );
+        }
+        $this->output->set_output(json_encode($response));
     }
 }
