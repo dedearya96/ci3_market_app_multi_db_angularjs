@@ -7,8 +7,8 @@ class Products extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Products_model');
-        $this->load->library('form_validation');
         $this->load->model('Categories_model');
+        $this->load->library('form_validation');
     }
 
     public function search($name)
