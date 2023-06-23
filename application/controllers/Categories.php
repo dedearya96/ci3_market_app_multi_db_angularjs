@@ -1,4 +1,5 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php 
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Categories extends CI_Controller
 {
@@ -18,7 +19,7 @@ class Categories extends CI_Controller
 
     public function index()
     {
-        $data["categories"] = $this->Categories_model->getAll();
+        $data = $this->Categories_model->getAll();
         $jsonData = json_encode($data);
         $this->output->set_output($jsonData);
     }
@@ -54,7 +55,7 @@ class Categories extends CI_Controller
             if ($result) {
                 $response = array(
                     'status' => 'success',
-                    'message' => 'Data inserted successfullly'
+                    'message' => 'Data inserted successfully'
                 );
             } else {
                 $response = array(

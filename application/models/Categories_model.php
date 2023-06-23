@@ -52,7 +52,6 @@ class Categories_model extends CI_Model
     {
         $this->db->where('id', $id);
         $this->db->delete('categories');
-        
         return $this->db->affected_rows() > 0;
     }
 }

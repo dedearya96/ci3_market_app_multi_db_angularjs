@@ -58,3 +58,10 @@ $route['category/insert'] = 'categories/insert';
 $route['category/update/(:num)'] = 'categories/update/$1';
 $route['category/delete/(:num)'] = 'categories/delete/$1';
 $route['category/search/(:any)'] = 'categories/search/$1';
+
+$route['products'] = 'products';
+$route['products/(:num)'] = 'products/show/$1';
+$route['products/insert'] = 'products/insert';
+$route['products/update/(:num)'] = 'products/update/$1';
+$route['products/delete/(:num)'] = 'products/delete/$1';
+$route['products/search/(:any)'] = 'products/search/$1';
