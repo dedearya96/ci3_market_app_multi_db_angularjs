@@ -15,14 +15,14 @@ class Products extends CI_Controller
     {
         $products = $this->Products_model->searchData($name);
         $jsonData = json_encode($products);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function index()
     {
         $data = $this->Products_model->getAll();
         $jsonData = json_encode($data);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function show($id)
@@ -34,7 +34,7 @@ class Products extends CI_Controller
         } else {
             $jsonData = json_encode(['error' => 'Data not found']);
             http_response_code(400);
-            $this->output->set_output($jsonData);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
         }
     }
 
@@ -86,7 +86,7 @@ class Products extends CI_Controller
             }
         }
         $jsonData = json_encode($response);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function update($id)
@@ -125,7 +125,7 @@ class Products extends CI_Controller
             }
         }
         $jsonData = json_encode($response);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function delete($id)
@@ -144,6 +144,6 @@ class Products extends CI_Controller
             );
             http_response_code(400);
         }
-        $this->output->set_output(json_encode($response));
+        $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
 }

@@ -14,14 +14,23 @@ class Categories extends CI_Controller
     {
         $categories = $this->Categories_model->searchData($name);
         $jsonData = json_encode($categories);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function index()
     {
-        $data = $this->Categories_model->getAll();
-        $jsonData = json_encode($data);
-        $this->output->set_output($jsonData);
+        try {
+            $data = $this->Categories_model->getAll();
+            $jsonData = json_encode($data);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
+        } catch (Exception $e) {
+            $response = array(
+                'status' => 'error',
+                'message' => $e->getMessage()
+            );
+            $jsonData = json_encode($response);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
+        }
     }
 
     public function show($id)
@@ -33,7 +42,7 @@ class Categories extends CI_Controller
         } else {
             $jsonData = json_encode(['error' => 'Data not found']);
             http_response_code(400);
-            $this->output->set_output($jsonData);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
         }
     }
 
@@ -69,7 +78,7 @@ class Categories extends CI_Controller
             }
         }
         $jsonData = json_encode($response);
-        $this->output->set_output($jsonData);
+        $this->output->set_content_type('application/json')->set_output($jsonData);
     }
 
     public function update($id)
@@ -104,7 +113,7 @@ class Categories extends CI_Controller
                 }
             }
             $jsonData = json_encode($response);
-            $this->output->set_output($jsonData);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
         } catch (Exception $e) {
             $response = array(
                 'status' => 'error',
@@ -112,7 +121,7 @@ class Categories extends CI_Controller
             );
 
             $jsonData = json_encode($response);
-            $this->output->set_output($jsonData);
+            $this->output->set_content_type('application/json')->set_output($jsonData);
         }
     }
 
@@ -133,6 +142,6 @@ class Categories extends CI_Controller
             );
             http_response_code(400);
         }
-        $this->output->set_output(json_encode($response));
+        $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
 }
