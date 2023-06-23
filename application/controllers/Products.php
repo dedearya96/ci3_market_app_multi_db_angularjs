@@ -8,6 +8,7 @@ class Products extends CI_Controller
         parent::__construct();
         $this->load->model('Products_model');
         $this->load->library('form_validation');
+        $this->load->model('Categories_model');
     }
 
     public function search($name)
@@ -32,22 +33,34 @@ class Products extends CI_Controller
             $this->output->set_output($jsonData);
         } else {
             $jsonData = json_encode(['error' => 'Data not found']);
+            http_response_code(400);
             $this->output->set_output($jsonData);
+        }
+    }
+
+    public function check_category($category_id)
+    {
+        if ($this->Categories_model->categoryExists($category_id)) {
+            return true;
+        } else {
+            $this->form_validation->set_message('check_category', 'Invalid category ID.');
+            return false;
         }
     }
 
     public function insert()
     {
-        $this->form_validation->set_rules(
-            'categories_id',
-            'Categories',
-            'required'
-        );
+        $this->form_validation->set_rules('categories_id', 'Categories_Id', 'required|integer|callback_check_category');
+        $this->form_validation->set_rules('name', 'Name', 'required',);
+        $this->form_validation->set_rules('price', 'Price', 'required|numeric',);
+        $this->form_validation->set_rules('description', 'Description', 'required',);
+
         if ($this->form_validation->run() == FALSE) {
             $response = array(
                 'status' => 'error',
                 'message' => validation_errors()
             );
+            http_response_code(422);
         } else {
             $data = array(
                 'categories_id' => $this->input->post('categories_id'),
@@ -63,11 +76,13 @@ class Products extends CI_Controller
                     'status' => 'success',
                     'message' => 'Data inserted successfully'
                 );
+                http_response_code(201);
             } else {
                 $response = array(
                     'status' => 'error',
                     'message' => 'Failed to insert data'
                 );
+                http_response_code(400);
             }
         }
         $jsonData = json_encode($response);
@@ -76,16 +91,17 @@ class Products extends CI_Controller
 
     public function update($id)
     {
-        $this->form_validation->set_rules(
-            'categories_id',
-            'Categories',
-            'required'
-        );
+        $this->form_validation->set_rules('categories_id', 'Categories_Id', 'required|integer|callback_check_category');
+        $this->form_validation->set_rules('name', 'Name', 'required',);
+        $this->form_validation->set_rules('price', 'Price', 'required|numeric',);
+        $this->form_validation->set_rules('description', 'Description', 'required',);
+
         if ($this->form_validation->run() == FALSE) {
             $response = array(
                 'status' => 'error',
                 'message' => validation_errors()
             );
+            http_response_code(422);
         } else {
             $data = array(
                 'categories_id' => $this->input->post('categories_id'),
@@ -100,6 +116,7 @@ class Products extends CI_Controller
                     'status' => 'success',
                     'message' => 'Data updated successfully'
                 );
+                http_response_code(201);
             } else {
                 $response = array(
                     'status' => 'error',
@@ -119,11 +136,13 @@ class Products extends CI_Controller
                 'status' => 'success',
                 'message' => 'Data deleted successfully',
             );
+            http_response_code(201);
         } else {
             $response = array(
                 'status' => 'error',
                 'message' => 'Id not found or deletion failed'
             );
+            http_response_code(400);
         }
         $this->output->set_output(json_encode($response));
     }

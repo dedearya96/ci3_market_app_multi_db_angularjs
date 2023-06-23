@@ -54,4 +54,11 @@ class Categories_model extends CI_Model
         $this->db->delete('categories');
         return $this->db->affected_rows() > 0;
     }
+
+    public function categoryExists($category_id) {
+        $this->db->where('id', $category_id);
+        $query = $this->db->get('categories');
+        
+        return $query->num_rows() > 0;
+    }
 }
