@@ -10,14 +10,17 @@ class Products_model extends CI_Model
 
     public function searchData($name)
     {
-        $this->db->like('name', $name);
-        $query = $this->db->get('products');
+        $this->db->select('p.id, c.name AS category, p.name, p.price, p.description, p.created_at, p.updated_at');
+        $this->db->from('products p');
+        $this->db->join('categories c', 'c.id = p.categories_id');
+        $this->db->like('p.name', $name);
+        $query = $this->db->get();
         return $query->result();
     }
 
     public function getAll()
     {
-        $query = $this->db->query('SELECT * FROM products');
+        $query = $this->db->query('SELECT p.id, c.name AS category, p.name, p.price, p.description, p.created_at, p.updated_at FROM products p JOIN categories c ON c.id= p.categories_id');
         $result = $query->result();
         return $result;
     }
