@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Categories extends CI_Controller
@@ -32,6 +32,7 @@ class Categories extends CI_Controller
             $this->output->set_output($jsonData);
         } else {
             $jsonData = json_encode(['error' => 'Data not found']);
+            http_response_code(400);
             $this->output->set_output($jsonData);
         }
     }
@@ -44,6 +45,7 @@ class Categories extends CI_Controller
                 'status' => 'error',
                 'message' => validation_errors()
             );
+            http_response_code(422);
         } else {
             $data = array(
                 'name' => $this->input->post('name'),
@@ -57,11 +59,13 @@ class Categories extends CI_Controller
                     'status' => 'success',
                     'message' => 'Data inserted successfully'
                 );
+                http_response_code(201);
             } else {
                 $response = array(
                     'status' => 'error',
                     'message' => 'Failed to insert data'
                 );
+                http_response_code(400);
             }
         }
         $jsonData = json_encode($response);
@@ -77,6 +81,7 @@ class Categories extends CI_Controller
                     'status' => 'error',
                     'message' => validation_errors()
                 );
+                http_response_code(422);
             } else {
                 $data = array(
                     'name' => $this->input->post('name'),
@@ -89,11 +94,13 @@ class Categories extends CI_Controller
                         'status' => 'success',
                         'message' => 'Data updated successfullly'
                     );
+                    http_response_code(201);
                 } else {
                     $response = array(
                         'status' => 'error',
                         'message' => 'Failed to updated data'
                     );
+                    http_response_code(400);
                 }
             }
             $jsonData = json_encode($response);
@@ -118,11 +125,13 @@ class Categories extends CI_Controller
                 'status' => 'success',
                 'message' => 'Data deleted successfully'
             );
+            http_response_code(201);
         } else {
             $response = array(
                 'status' => 'error',
                 'message' => 'ID not found or deletion failed'
             );
+            http_response_code(400);
         }
         $this->output->set_output(json_encode($response));
     }
