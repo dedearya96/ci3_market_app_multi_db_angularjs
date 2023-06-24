@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Categories extends CI_Controller
+class Categories extends MY_Controller
 {
     public function __construct()
     {
@@ -15,6 +15,7 @@ class Categories extends CI_Controller
         $categories = $this->Categories_model->searchData($name);
         $jsonData = json_encode($categories);
         $this->output->set_content_type('application/json')->set_output($jsonData);
+        $this->log_activity();
     }
 
     public function index()
@@ -31,6 +32,7 @@ class Categories extends CI_Controller
             $jsonData = json_encode($response);
             $this->output->set_content_type('application/json')->set_output($jsonData);
         }
+        $this->log_activity();
     }
 
     public function show($id)
@@ -44,6 +46,7 @@ class Categories extends CI_Controller
             http_response_code(400);
             $this->output->set_content_type('application/json')->set_output($jsonData);
         }
+        $this->log_activity();
     }
 
     public function insert()
@@ -79,6 +82,7 @@ class Categories extends CI_Controller
         }
         $jsonData = json_encode($response);
         $this->output->set_content_type('application/json')->set_output($jsonData);
+        $this->log_activity();
     }
 
     public function update($id)
@@ -123,6 +127,7 @@ class Categories extends CI_Controller
             $jsonData = json_encode($response);
             $this->output->set_content_type('application/json')->set_output($jsonData);
         }
+        $this->log_activity();
     }
 
     public function delete($id)
@@ -143,5 +148,6 @@ class Categories extends CI_Controller
             http_response_code(400);
         }
         $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        $this->log_activity();
     }
 }
