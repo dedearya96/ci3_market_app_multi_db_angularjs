@@ -47,7 +47,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		app.controller('myCtrl', function($scope, $http, $timeout) {
 			$scope.loading = true;
 			$timeout(function() {
-				$http.get('/category')
+				$http.get('/api/category')
 					.then(function(response) {
 						$scope.data = response.data;
 						$scope.loading = false;
